@@ -1,0 +1,446 @@
+﻿<!DOCTYPE html>
+<html>
+  <head>
+    <title>SessionPoker
+    </title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+div{
+  position:relative;
+  }
+span{
+  padding:10px;
+  font-size:30px;
+  color:black;
+  border-radius:5px;
+/*   background-color:blue; */
+/*   margin:30px 10px 0 10px; */
+  margin-left:10px;
+}
+div.button{
+  margin:20px 10px 20px 10px;
+  }
+div#vpip{
+  position:relative;
+  display:block;
+  float:left;
+  width:30%;
+  }
+div#timer{
+  position:relative;
+  display:block;
+  float:right;
+  width:66%;
+  font-size:16px;
+  text-align:right;
+  padding:10px;
+  background:#EEE;
+  }
+div#timer span{
+  font-size:16px;
+  color:green;
+  }
+button{
+  font-size:22px;
+  margin:10px;
+  float:left;
+/*   width:30px; */
+/*   height:20px; */
+  padding:5px;
+  }
+div#suits{
+  float:left;
+  max-width:30%;
+  }
+div#nums{
+  float:right;
+  max-width:60%;
+  }
+div#nums > div.button span{
+/*   font-size:30px; */
+  margin-left:10px;
+  }
+div#nums div{
+  display:inline-block;
+/*   width:30px; */
+  }
+*.lil{
+  position:absolute;
+  right:0;
+  bottom:0;
+  font-size:12px;
+  background:white;
+  padding:1px;
+}
+#score, #score *{
+  font-size:16px;
+  margin:0;
+  padding:0;
+  }
+#score span{
+  width:100%;
+  }
+#guess{
+display:none;
+/*   display:block;  */
+  position:fixed;
+  bottom:0;
+  left:0;
+  width:90%;
+  background:none;
+  margin:0;
+  padding:0;
+  z-index:-1;
+}
+#guess *{
+/*   display: none; */
+  font-size:14px;
+  margin:0;
+  padding:0;
+  background:none;
+  overflow:wrap;
+  }
+.gNums{
+  font-size:16px;
+  }
+</style>
+  </head>
+  <body>
+    <!-- Start your code here -->
+    <div id="suits">
+      <div id="h" class="button" onClick="calc_suits(this)">
+        <span>&hearts;
+        </span>
+        <span id="hCount" class="lil" >
+        </span>
+      </div>
+      <div id="d" class="button" onClick="calc_suits(this)">
+        <span>&diams;
+        </span>
+        <span class="lil"  id="dCount">
+        </span>
+      </div>
+      <div id="s" class="button" onClick="calc_suits(this)">
+        <span>&spades;
+        </span>
+        <span class="lil"  id="sCount">
+        </span>
+      </div>
+      <div id="c" class="button" onClick="calc_suits(this)">
+        <span>&clubs;
+        </span>
+        <span class="lil"  id="cCount">
+        </span>
+      </div>
+    </div>
+    <div id="nums">
+      <div id="A" class="button" onClick="calc_nums(this)">
+        <span>A
+        </span>
+        <span class="lil" id="cA">
+        </span>
+      </div>
+      <div id="K" class="button" onClick="calc_nums(this)">
+        <span>K
+        </span>
+        <span class="lil" id="cK">
+        </span>
+      </div>
+      <div id="Q" class="button" onClick="calc_nums(this)">
+        <span>Q
+        </span>
+        <span class="lil" id="cQ">
+        </span>
+      </div>
+      <div id="J" class="button" onClick="calc_nums(this)">
+        <span>J
+        </span>
+        <span class="lil" id="cJ">
+        </span>
+      </div>
+      <div id="T" class="button" onClick="calc_nums(this)">
+        <span>T
+        </span>
+        <span class="lil" id="cT">
+        </span>
+      </div>
+      <div id="_9" class="button" onClick="calc_nums(this)">
+        <span>9
+        </span>
+        <span class="lil" id="c_9">
+        </span>
+      </div>
+      <div id="_8" class="button" onClick="calc_nums(this)">
+        <span>8
+        </span>
+        <span class="lil" id="c_8">
+        </span>
+      </div>
+      <div id="_7" class="button" onClick="calc_nums(this)">
+        <span>7
+        </span>
+        <span class="lil" id="c_7">
+        </span>
+      </div>
+      <div id="_6" class="button" onClick="calc_nums(this)">
+        <span>6
+        </span>
+        <span class="lil" id="c_6">
+        </span>
+      </div>
+      <div id="_5" class="button" onClick="calc_nums(this)">
+        <span>5
+        </span>
+        <span class="lil" id="c_5">
+        </span>
+      </div>
+      <div id="_4" class="button" onClick="calc_nums(this)">
+        <span>4
+        </span>
+        <span class="lil" id="c_4">
+        </span>
+      </div>
+      <div id="_3" class="button" onClick="calc_nums(this)">
+        <span>3
+        </span>
+        <span class="lil" id="c_3">
+        </span>
+      </div>
+      <div id="_2" class="button" onClick="calc_nums(this)">
+        <span>2
+        </span>
+        <span class="lil" id="c_2">
+        </span>
+      </div>
+    </div>
+    <div id="vpip">
+<!--    score    -->
+      <button id="fold" onclick="vpip(this)">FOLD</button>
+      <button id="call" onclick="vpip(this)">CALL</button>
+      <button id="raise" onclick="vpip(this)">RAISE</button>
+    </div>
+    <div id="timer">
+      <!--     <span id="score" class=""> -->
+    <span id="vscore">VPIP</span><br>
+    <span id="pscore">PRE-RAISE</span><br>
+<!--     </span> -->
+    <span id="th">hands</span><br>
+    <span id="clock">play time</span>
+    </div>
+    <div id="guess">
+    <span id="gSuits"></span>
+    <span id="gNums"></span>
+    </div>
+<script>
+// var num = [
+//   "A",
+//   "K",
+//   "Q",
+//   "J",
+//   "T",
+//   "9",
+//   "8",
+//   "7",
+//   "6",
+//   "5",
+//   "4",
+//   "3",
+//   "2"
+// ];
+// var sut = [
+//   "&heart; ",
+//   "&diamond; ",
+//   "&spade; ",
+//   "&club; "
+// ];
+// function btn_gen(name,list){
+//   let y=0;
+//   var i;
+//   var but;
+//   let div = document.getElementById(name);
+//   while(y < list.length){
+//     i = list[y++];
+//     but = document.createElement("button");
+//     but.innerHTML = i;
+//     but.id = name + y;
+//     div.appendChild(but);
+//     but.setAttribute.className = "button";
+//   }
+// }
+// btn_gen("suits",num);
+document.countS ={};
+document.displayCountS={
+};
+document.countN ={};
+document.displayCountN={};
+document.gSuits={};
+document.gNums={};
+document.fold=0;
+document.call=0;
+document.raise=0;
+document.time=0;
+function vpip(b){
+  var total;
+  var vin;
+  if(b.id === "fold"){
+    document.fold++;
+    }else if(b.id === "call"){
+      document.call++;
+      }else if(b.id === "raise"){
+        document.raise++;
+        }else{console.log("this error");}
+  total = document.raise+
+    document.call+
+    document.fold;
+  vin = document.call+
+    document.raise;
+  document.getElementById("vscore").innerHTML= 
+    "VPIP " + 
+    (vin/total*100).toFixed() + " %";
+  document.getElementById("pscore").innerHTML=
+    "RAISE " + 
+    (document.raise/vin*100).toFixed() + " %";                      
+  document.getElementById("th").innerHTML= total + " - HANDS";
+}
+vpip(false);
+function suits_result(){
+//   console.log("here");
+  var big = (function(){
+    var x;
+    for(var[a,b] of Object.entries(document.countS)){
+      if(x < b || !x) x = b;
+      }
+//     console.log("big = " + x);
+    return x;
+    }());
+  for(const[k,val] of Object.entries(document.countS)){
+    var id = k + "Count";
+    var num = document.displayCountS[k] = (big - val);
+    document.getElementById(id).innerHTML = num;
+    document.gSuits[k]=num;
+  }
+}
+
+
+function calc_suits(t){
+  var k = t.id;
+  var spanId= k + "Count";
+  var dv = document.getElementById(spanId);
+  if(!document.countS[k]) document.countS[k] = 0;
+  document.countS[k] = document.countS[k] + 1;
+  //  var x = 1 + ( document.countS[k]++ || 0 );
+  suits_result();
+  guess();
+}
+
+
+
+
+// ////000//////////////
+
+
+
+
+
+
+function nums_result(){
+  console.log("here");
+  var big = (function(){
+    var x;
+    for(var[a,b] of Object.entries(document.countN)){
+      if(x < b || !x) x = b;
+      }
+//     console.log("big = " + x);
+    return x;
+    }());
+  for(const[k,val] of Object.entries(document.countN)){
+    var id = "c" + k;
+    var num = document.displayCountN[k] = (big - val);
+    document.getElementById(id).innerHTML = num;
+    document.gNums[k]=num;
+  }
+}
+
+
+function calc_nums(t){
+  var k = t.id;
+  var spanId= "c" + k;
+  var dv = document.getElementById(spanId);
+  if(!document.countN[k]) document.countN[k] = 0;
+  document.countN[k] = document.countN[k] + 1;
+  //  var x = 1 + ( document.countS[k]++ || 0 );
+  nums_result();
+  guess();
+//   console.dir(Object.values(document.countN));
+}
+
+
+////////
+
+
+function guess(){
+  var h = "&hearts;";
+  var d = "&diams;";
+  var s = "&spades;";
+  var c = "&clubs;";
+  var suits = "";
+  var nums = "";
+ printNums = sortO(document.gNums);
+ printSuits = sortO(document.gSuits);
+//  console.dir(Object.values(printSuits));
+ for(const[k,val] of Object.entries(printSuits)){
+   if(val > 0) for(i=0;i<val;i++){
+     suits += eval(k);
+     }
+   suits += "  ";
+   }
+  document.getElementById("gSuits").innerHTML = suits;
+  for(const[k,val] of Object.entries(printNums)){
+   if(val > 0) for(i=0;i<val;i++){
+//      console.log(k);
+     nums += k.substring(k.length - 1, k.length);
+    
+     }
+    nums += " ";
+   }
+//   console.log(nums);
+  document.getElementById("gNums").innerHTML = nums;
+//   console.log(suits);
+}
+
+
+
+
+  function sortO (obj) {
+  return Object.keys(obj)
+    .sort((a, b) => obj[b] - obj[a])
+    .reduce((acc, cur) => {
+      acc[cur] = obj[cur];
+      return acc;
+    }, {});
+}
+
+
+setInterval(function(){
+var span = document.getElementById("clock");
+var sec = document.time++;
+var h= Math.floor(sec/ 60 / 60);
+var m = Math.floor(sec/ 60) - (h * 60);
+var s = sec % 60;
+span.innerHTML = 
+  h.toString().padStart(2, '0') + 
+  ':' + m.toString().padStart(2, '0') + 
+  ':' + s.toString().padStart(2, '0');
+},1000);
+
+
+
+
+window.onLoad(function(){
+  var divs =document.getElementsByTagName("div");
+  for(const[x] of divs) x.click();
+ }());
+</script>
+    <!-- End your code here -->
+  </body>
+</html>
